@@ -1,7 +1,7 @@
 # Camera localization using AprilTags 
 
 - **Goal**: Measure the locations of the camera and compare them with AprilTags’ algorithm output/
-- Translation/rotation estimation experiment results: [[link](https://docs.google.com/presentation/d/1nB0fvfwQufdiujhKGforBgsoaFsC6xwerG_3aSSScB0/edit#slide=id.gdd6fadd917_0_0)]
+- Translation/rotation estimation experiment results: [[link to google slides](https://docs.google.com/presentation/d/1nB0fvfwQufdiujhKGforBgsoaFsC6xwerG_3aSSScB0/edit#slide=id.gdd6fadd917_0_0)]
 
 ## Example of translation estimation
 
