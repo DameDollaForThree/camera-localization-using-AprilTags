@@ -27,7 +27,7 @@ if __name__ == '__main__':
     original_image = cv.imread(img_path)
     cv.imshow('Original Image', original_image)
 
-    # create a Tag object, and add tags with global parameters
+    # create a Tag object, and manually add tags with global parameters
     tags = Tag(tag_size=0.084, family='tagStandard41h12')
     tags.add_tag(id=0, location=(0.1016, 0, 1.395), orientation=(-90, 0, 0))
     # array([[1,0,0],[0,0,1],[0,-1,0]]) corresponds to (-90,0,0) in euler angles
@@ -85,11 +85,12 @@ if __name__ == '__main__':
             R_matrix_global = tags.orientations[detected_id]
             T_vector_global = tags.locations[detected_id]
 
-            # compute the camera position in the global frame
+            # compute the camera position in the global frame using the camera position in the tag frame
             camera_pos_global = R_matrix_global @ camera_pos_tag + T_vector_global
             avg_pos += camera_pos_global
 
             # compute the camera angles in the global frame
+            # if there are multiple rotational matrices, simply multiply all of them together
             total_R_matrix = R_matrix_tag @ R_matrix_global
             camera_angles_global = tags.rotationMatrixToEulerAngles(
                 total_R_matrix)
