@@ -73,28 +73,27 @@ if __name__ == '__main__':
 
         # Computation
         # first, compute the camera position in the tag frame
-        # extract the rotational matrix and translation vector in the tag frame
-        R_matrix_tag = result.pose_R
-        T_vector_tag = (result.pose_t).reshape(3,)
-        camera_pos_tag = R_matrix_tag.T @ (-T_vector_tag)
+        cam_R_tag = result.pose_R.T     # R matrix of the camera in the tag frame
+        cam_T_tag = -1 * result.pose_t.reshape(3,)  # cam's t in the tag frame
+        cam_pos_tag = cam_R_tag @ cam_T_tag
 
         # next, compute the camera position and angle in the global frame
         detected_id = result.tag_id
         if detected_id in tags.locations.keys():
-            # extract the rotational matrix and translation vector in the global frame
-            R_matrix_global = tags.orientations[detected_id]
-            T_vector_global = tags.locations[detected_id]
+            # extract tags' R matrix and t vector in the global frame
+            tag_R_global = tags.orientations[detected_id]
+            tag_T_global = tags.locations[detected_id]
 
             # compute the camera position in the global frame using the camera position in the tag frame
-            camera_pos_global = R_matrix_global @ camera_pos_tag + T_vector_global
-            avg_pos += camera_pos_global
+            cam_pos_global = tag_R_global @ cam_pos_tag + tag_T_global
+            avg_pos += cam_pos_global
 
             # compute the camera angles in the global frame
             # if there are multiple rotational matrices, simply multiply all of them together
-            total_R_matrix = R_matrix_tag @ R_matrix_global
-            camera_angles_global = tags.rotationMatrixToEulerAngles(
+            total_R_matrix = cam_R_tag @ tag_R_global
+            cam_angle_global = tags.rotationMatrixToEulerAngles(
                 total_R_matrix)
-            avg_angles += camera_angles_global
+            avg_angles += cam_angle_global
 
         else:
             print("Tag is not added")
